@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;500;600;700&display=swap');
-
 @layer base {
   :root {
     /* Modern Premium Color Palette */
@@ -173,6 +171,9 @@
   
   .card-premium-hover {
     @apply card-premium hover:shadow-lg hover:-translate-y-1;
+  }
+
+  .card-premium-hover:hover {
     border-color: hsl(var(--primary) / 0.3);
   }
 
@@ -242,11 +243,6 @@
   /* Premium Button Utility */
   .btn-primary {
     @apply relative inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-300 overflow-hidden group;
-  }
-
-  .btn-primary:before {
-    @apply absolute inset-0 bg-gradient-to-r from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300;
-    content: '';
   }
 
   /* Badge Premium */
