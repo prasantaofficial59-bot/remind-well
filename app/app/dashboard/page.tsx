@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Plus, Sparkles } from 'lucide-react';
+import { Plus, Sparkles, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ReminderCard } from '@/components/reminder-card';
 import { StatsBar } from '@/components/stats-bar';
@@ -30,15 +30,15 @@ export default function DashboardPage() {
   if (remindersLoading) {
     return (
       <div className="space-y-8 animate-fade-in">
-        <div className="space-y-2">
-          <div className="h-9 w-64 bg-gray-200 rounded animate-pulse-soft" />
-          <div className="h-5 w-48 bg-gray-200 rounded animate-pulse-soft" />
+        <div className="space-y-3">
+          <div className="h-10 w-96 bg-muted rounded-lg animate-pulse" />
+          <div className="h-6 w-64 bg-muted rounded-lg animate-pulse" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-white rounded-lg border border-gray-200 p-6 space-y-3">
-              <div className="h-4 w-20 bg-gray-200 rounded animate-pulse-soft" />
-              <div className="h-8 w-16 bg-gray-200 rounded animate-pulse-soft" />
+            <div key={i} className="card-premium p-6 space-y-3 h-32 animate-pulse">
+              <div className="h-4 w-20 bg-muted rounded" />
+              <div className="h-8 w-16 bg-muted rounded" />
             </div>
           ))}
         </div>
@@ -59,20 +59,19 @@ export default function DashboardPage() {
     <div className="space-y-8 animate-fade-in">
       {/* Welcome Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="space-y-1">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Welcome back, {user && getFirstName(user.email)}!
+        <div className="space-y-2">
+          <h1 className="text-display-md">
+            Welcome back, <span className="text-gradient">{user && getFirstName(user.email)}</span>
           </h1>
-          <p className="text-gray-500">
-            Manage your reminders and stay on track with your goals
+          <p className="text-muted-foreground">
+            You're on track. Manage your reminders and build lasting habits today.
           </p>
         </div>
         <Button
           onClick={() => router.push('/dashboard/reminders/new')}
-          size="lg"
-          className="bg-primary-500 hover:bg-primary-600 text-white shadow-sm"
+          className="w-full sm:w-auto bg-gradient-premium hover:shadow-lg text-white font-semibold rounded-lg h-12 flex items-center gap-2 transition-all active:scale-95"
         >
-          <Plus className="mr-2 h-5 w-5" />
+          <Plus className="h-5 w-5" />
           New Reminder
         </Button>
       </div>
@@ -86,19 +85,23 @@ export default function DashboardPage() {
 
       {/* Active Reminders */}
       {activeReminders.length > 0 && (
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-success-500" />
-            <h2 className="text-xl font-semibold text-gray-900">
-              Active Reminders
-            </h2>
-            <span className="text-sm text-gray-500">
-              ({activeReminders.length})
+        <div className="space-y-6 animate-slide-in">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-gradient-to-r from-success to-accent animate-pulse" />
+              <h2 className="text-display-sm">
+                Active Reminders
+              </h2>
+            </div>
+            <span className="text-sm font-medium text-muted-foreground bg-secondary/50 rounded-full px-3 py-1">
+              {activeReminders.length}
             </span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {activeReminders.map((reminder) => (
-              <ReminderCard key={reminder.id} reminder={reminder} />
+            {activeReminders.map((reminder, idx) => (
+              <div key={reminder.id} style={{ animationDelay: `${idx * 50}ms` }} className="animate-fade-in">
+                <ReminderCard reminder={reminder} />
+              </div>
             ))}
           </div>
         </div>
@@ -106,19 +109,23 @@ export default function DashboardPage() {
 
       {/* Paused Reminders */}
       {pausedReminders.length > 0 && (
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-gray-400" />
-            <h2 className="text-xl font-semibold text-gray-900">
-              Paused Reminders
-            </h2>
-            <span className="text-sm text-gray-500">
-              ({pausedReminders.length})
+        <div className="space-y-6 animate-slide-in" style={{ animationDelay: '100ms' }}>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-muted-foreground/40" />
+              <h2 className="text-display-sm">
+                Paused Reminders
+              </h2>
+            </div>
+            <span className="text-sm font-medium text-muted-foreground bg-secondary/50 rounded-full px-3 py-1">
+              {pausedReminders.length}
             </span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {pausedReminders.map((reminder) => (
-              <ReminderCard key={reminder.id} reminder={reminder} />
+            {pausedReminders.map((reminder, idx) => (
+              <div key={reminder.id} style={{ animationDelay: `${idx * 50}ms` }} className="animate-fade-in">
+                <ReminderCard reminder={reminder} />
+              </div>
             ))}
           </div>
         </div>

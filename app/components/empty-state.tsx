@@ -1,15 +1,15 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Plus, Sparkles } from 'lucide-react';
+import { Plus, Sparkles, Zap, Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
 const SUGGESTED_HABITS = [
-  { emoji: '💧', title: 'Drink Water', interval: 60 },
-  { emoji: '🧘', title: 'Take a Break', interval: 120 },
-  { emoji: '🤸', title: 'Stretch', interval: 90 },
-  { emoji: '🪑', title: 'Check Posture', interval: 45 },
+  { emoji: '💧', title: 'Hydration', interval: 60 },
+  { emoji: '🧘', title: 'Wellness Break', interval: 120 },
+  { emoji: '🤸', title: 'Stretching', interval: 90 },
+  { emoji: '📝', title: 'Mindfulness', interval: 45 },
 ];
 
 export function EmptyState() {
@@ -23,60 +23,94 @@ export function EmptyState() {
     <div className="min-h-[60vh] flex items-center justify-center animate-fade-in">
       <div className="max-w-3xl mx-auto text-center px-4">
         {/* Illustration */}
-        <div className="mb-6 sm:mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-primary-50 mb-4 sm:mb-6">
-            <Sparkles className="h-10 w-10 sm:h-12 sm:w-12 text-primary-500" />
+        <div className="mb-8 sm:mb-12 space-y-6">
+          {/* Icon */}
+          <div className="inline-flex items-center justify-center relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-2xl w-32 h-32" />
+            <div className="relative inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-gradient-premium shadow-lg">
+              <Sparkles className="h-12 w-12 text-white" />
+            </div>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">
-            Start Building Better Habits
-          </h2>
-          <p className="text-base sm:text-lg text-gray-500 max-w-md mx-auto px-4 sm:px-0">
-            Create your first reminder and let RemindWell help you stay consistent with your goals
-          </p>
+
+          {/* Text */}
+          <div className="space-y-3">
+            <h2 className="text-display-md">
+              Ready to Build <span className="text-gradient">Better Habits?</span>
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
+              Create your first AI-powered reminder and let RemindWell help you stay consistent with your wellness goals
+            </p>
+          </div>
         </div>
 
         {/* Primary CTA */}
         <Button
           onClick={handleCreateReminder}
-          size="lg"
-          className="bg-primary-500 hover:bg-primary-600 text-white shadow-sm mb-8 sm:mb-12 h-12 sm:h-14 px-6 sm:px-8 text-sm sm:text-base"
+          className="bg-gradient-premium hover:shadow-lg text-white font-semibold rounded-lg h-12 px-8 flex items-center gap-2 mx-auto mb-12 transition-all active:scale-95"
         >
-          <Plus className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+          <Plus className="h-5 w-5" />
           Create Your First Reminder
         </Button>
 
         {/* Suggested Habits */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-center gap-2">
-            <div className="h-px w-12 bg-gray-200" />
-            <p className="text-sm font-medium text-gray-500">
-              Or start with a popular habit
+        <div className="space-y-6">
+          <div className="flex items-center justify-center gap-4">
+            <div className="h-px w-12 bg-border/60" />
+            <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+              Popular Habits to Get Started
             </p>
-            <div className="h-px w-12 bg-gray-200" />
+            <div className="h-px w-12 bg-border/60" />
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-            {SUGGESTED_HABITS.map((habit) => (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            {SUGGESTED_HABITS.map((habit, idx) => (
               <Card
                 key={habit.title}
-                className="cursor-pointer hover:shadow-md hover:border-primary-200 transition-all duration-200 group"
                 onClick={handleCreateReminder}
+                style={{ animationDelay: `${idx * 50}ms` }}
+                className="cursor-pointer card-premium-hover p-5 sm:p-6 text-center group space-y-3 animate-fade-in"
               >
-                <div className="p-4 sm:p-6 text-center space-y-2 sm:space-y-3">
-                  <div className="text-3xl sm:text-4xl mb-1 sm:mb-2 group-hover:scale-110 transition-transform">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="relative text-4xl group-hover:scale-125 transition-transform origin-center">
                     {habit.emoji}
                   </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-semibold text-gray-900 mb-1">
-                      {habit.title}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      Every {habit.interval} min
-                    </p>
-                  </div>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
+                    {habit.title}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Every {habit.interval} min
+                  </p>
                 </div>
               </Card>
             ))}
+          </div>
+        </div>
+
+        {/* Features highlight */}
+        <div className="mt-16 pt-8 border-t border-border/40">
+          <p className="text-xs uppercase font-semibold text-muted-foreground mb-4 tracking-wider">What You'll Get</p>
+          <div className="grid grid-cols-3 gap-4 sm:gap-6">
+            <div className="space-y-2">
+              <div className="inline-flex p-2.5 rounded-lg bg-primary/10 text-primary">
+                <Sparkles className="h-5 w-5" />
+              </div>
+              <p className="text-xs sm:text-sm font-semibold text-foreground">AI Messages</p>
+            </div>
+            <div className="space-y-2">
+              <div className="inline-flex p-2.5 rounded-lg bg-accent/10 text-accent">
+                <Flame className="h-5 w-5" />
+              </div>
+              <p className="text-xs sm:text-sm font-semibold text-foreground">Telegram Alerts</p>
+            </div>
+            <div className="space-y-2">
+              <div className="inline-flex p-2.5 rounded-lg bg-success/10 text-success">
+                <Zap className="h-5 w-5" />
+              </div>
+              <p className="text-xs sm:text-sm font-semibold text-foreground">Smart Scheduling</p>
+            </div>
           </div>
         </div>
       </div>

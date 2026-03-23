@@ -7,6 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 
 export default function AuthPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -70,20 +72,34 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-primary-50 to-white px-4">
-      <div className="max-w-md w-full">
-        <div className="bg-white p-8 sm:p-10 rounded-xl shadow-medium border border-gray-200">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-accent/5 px-4 py-12">
+      {/* Background Elements */}
+      <div className="absolute top-20 right-1/4 w-64 h-64 rounded-full blur-3xl opacity-20" style={{background: 'linear-gradient(135deg, rgb(107, 114, 207), rgb(84, 194, 206))'}} />
+      <div className="absolute -bottom-32 left-1/3 w-80 h-80 rounded-full blur-3xl opacity-15" style={{background: 'linear-gradient(135deg, rgb(84, 194, 206), rgb(99, 230, 226))'}} />
+
+      <div className="w-full max-w-md relative z-10">
+        {/* Back to Home */}
+        <Link 
+          href="/"
+          className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mb-8"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Home
+        </Link>
+
+        {/* Card */}
+        <div className="card-premium p-8 sm:p-10 space-y-6">
           {/* Header */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-100 mb-4">
-              <span className="text-3xl">🔔</span>
+          <div className="text-center space-y-3">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-premium text-white shadow-lg">
+              <span className="text-2xl font-bold">✓</span>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="text-3xl font-bold">
               {isSignUp ? 'Create Account' : 'Welcome Back'}
             </h1>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               {isSignUp
-                ? 'Start building healthy habits today'
+                ? 'Start building healthier habits with AI-powered reminders'
                 : 'Sign in to manage your reminders'
               }
             </p>
@@ -91,13 +107,13 @@ export default function AuthPage() {
 
           {/* Alerts */}
           {error && (
-            <Alert variant="destructive" className="mb-6">
+            <Alert className="bg-destructive/10 text-destructive border-destructive/20">
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
 
           {message && (
-            <Alert className="mb-6 bg-success-50 text-success-800 border-success-200">
+            <Alert className="bg-success/10 text-success border-success/20">
               <AlertDescription>{message}</AlertDescription>
             </Alert>
           )}
@@ -105,7 +121,7 @@ export default function AuthPage() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+              <Label htmlFor="email" className="text-sm font-semibold text-foreground">
                 Email Address
               </Label>
               <Input
@@ -116,12 +132,12 @@ export default function AuthPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={isLoading}
-                className="h-11"
+                className="h-12 rounded-lg bg-secondary/40 border-border hover:border-border/60 focus:border-primary transition-colors"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+              <Label htmlFor="password" className="text-sm font-semibold text-foreground">
                 Password
               </Label>
               <Input
@@ -133,19 +149,19 @@ export default function AuthPage() {
                 required
                 minLength={6}
                 disabled={isLoading}
-                className="h-11"
+                className="h-12 rounded-lg bg-secondary/40 border-border hover:border-border/60 focus:border-primary transition-colors"
               />
               {isSignUp && (
-                <p className="text-xs text-gray-500 mt-1">
-                  Minimum 6 characters required
+                <p className="text-xs text-muted-foreground mt-1.5">
+                  Minimum 6 characters required for security
                 </p>
               )}
             </div>
 
             <Button
               type="submit"
-              className="w-full h-11 bg-primary-500 hover:bg-primary-600 text-white font-medium shadow-sm"
               disabled={isLoading}
+              className="w-full h-12 bg-gradient-premium hover:shadow-lg text-white font-semibold rounded-lg transition-all active:scale-95"
             >
               {isLoading
                 ? (isSignUp ? 'Creating account...' : 'Signing in...')
@@ -154,38 +170,39 @@ export default function AuthPage() {
             </Button>
           </form>
 
-          {/* Toggle Sign Up/In */}
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => {
-                setIsSignUp(!isSignUp);
-                setError('');
-                setMessage('');
-              }}
-              className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
-              disabled={isLoading}
-            >
-              {isSignUp
-                ? 'Already have an account? Sign in'
-                : "Don't have an account? Sign up"
-              }
-            </button>
+          {/* Divider */}
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-border/40" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-3 bg-card text-muted-foreground">
+                {isSignUp ? 'or sign in if you have an account' : 'or create an account'}
+              </span>
+            </div>
           </div>
 
-          {/* Footer Note */}
-          <p className="text-xs text-gray-500 text-center mt-8 leading-relaxed">
-            By continuing, you agree to receive reminder notifications via Telegram
-          </p>
-        </div>
-
-        {/* Back to Home Link */}
-        <div className="text-center mt-6">
-          <a
-            href="/"
-            className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+          {/* Toggle Sign Up/In */}
+          <button
+            type="button"
+            onClick={() => {
+              setIsSignUp(!isSignUp);
+              setError('');
+              setMessage('');
+            }}
+            disabled={isLoading}
+            className="w-full py-2.5 text-sm font-semibold text-primary hover:bg-primary/5 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            ← Back to Home
-          </a>
+            {isSignUp
+              ? 'Already have an account? Sign in'
+              : "Don't have an account? Sign up"
+            }
+          </button>
+
+          {/* Footer Note */}
+          <p className="text-xs text-muted-foreground text-center leading-relaxed pt-4 border-t border-border/40">
+            By continuing, you agree to receive reminder notifications via Telegram and accept our Terms of Service.
+          </p>
         </div>
       </div>
     </div>

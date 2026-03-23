@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, BellRing, LayoutDashboard, Bell, Settings as SettingsIcon, LogOut } from 'lucide-react';
+import { Menu, BellRing, LayoutDashboard, Bell, Settings as SettingsIcon, LogOut, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -33,19 +33,10 @@ export function Header() {
   const supabase = createClient();
 
   const handleSignOut = async () => {
-    // Sign out from Supabase
     await supabase.auth.signOut();
-
-    // Clear user store
     clearUser();
-
-    // Clear React Query cache
     queryClient.clear();
-
-    // Reset UI store
     resetUIStore();
-
-    // Redirect to home
     router.push('/');
   };
 
@@ -73,14 +64,16 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-sticky bg-white/80 backdrop-blur-md border-b border-gray-200">
+      <header className="sticky top-0 z-50 border-b border-border/40 backdrop-blur-xl bg-background/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center gap-8">
-              <Link href="/dashboard" className="flex items-center gap-2 group">
-                <BellRing className="h-6 w-6 text-primary-500 group-hover:text-primary-600 transition-colors" />
-                <span className="text-xl font-bold text-gray-900 hidden sm:inline">RemindWell</span>
+              <Link href="/dashboard" className="flex items-center gap-3 group">
+                <div className="relative w-10 h-10 rounded-lg bg-gradient-premium flex items-center justify-center text-white font-bold text-lg shadow-md group-hover:shadow-lg transition-all">
+                  ✓
+                </div>
+                <span className="text-lg font-bold text-gradient hidden sm:inline">RemindWell</span>
               </Link>
 
               {/* Desktop Navigation */}
@@ -94,10 +87,10 @@ export function Header() {
                       key={link.href}
                       href={link.href}
                       className={cn(
-                        'flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                        'flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all',
                         isActive
-                          ? 'bg-primary-50 text-primary-700'
-                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                          ? 'bg-primary/10 text-primary'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
                       )}
                     >
                       <Icon className="h-4 w-4" />
@@ -109,21 +102,20 @@ export function Header() {
             </div>
 
             {/* Right Side Actions */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               {/* Mobile Menu Button */}
               <button
                 type="button"
-                className="lg:hidden relative z-50 p-2 rounded-md hover:bg-gray-100 transition-colors"
+                className="lg:hidden relative z-50 p-2 rounded-lg hover:bg-secondary/60 transition-all active:scale-95"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  console.log('Mobile nav button clicked, current state:', mobileNavOpen);
                   setMobileNavOpen(true);
                 }}
                 aria-label="Open navigation menu"
                 aria-expanded={mobileNavOpen}
               >
-                <Menu className="h-5 w-5" />
+                <Menu className="h-5 w-5 text-foreground" />
               </button>
 
               {/* User Dropdown (Desktop) */}
@@ -132,54 +124,54 @@ export function Header() {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
-                      className="hidden lg:flex relative h-10 w-10 rounded-full p-0"
+                      className="hidden lg:flex relative h-10 w-10 rounded-full p-0 hover:bg-secondary/50"
                     >
                       <Avatar className="h-10 w-10">
-                        <AvatarFallback className="bg-primary-100 text-primary-700 font-medium text-sm">
+                        <AvatarFallback className="bg-gradient-premium text-white font-semibold text-sm">
                           {getInitials(user.email)}
                         </AvatarFallback>
                       </Avatar>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56 sm:w-64 mx-2 sm:mx-0">
+                  <DropdownMenuContent align="end" className="w-64 mx-2 sm:mx-0 rounded-xl border-border">
                     {/* User Info */}
                     <div className="flex items-center gap-3 p-3">
-                      <Avatar className="h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0">
-                        <AvatarFallback className="bg-primary-100 text-primary-700 font-medium text-xs sm:text-sm">
+                      <Avatar className="h-10 w-10 flex-shrink-0">
+                        <AvatarFallback className="bg-gradient-premium text-white font-semibold text-sm">
                           {getInitials(user.email)}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex flex-col flex-1 min-w-0">
-                        <p className="text-xs sm:text-sm font-medium text-gray-900 truncate break-all">
+                        <p className="text-sm font-semibold text-foreground truncate break-all">
                           {user.email}
                         </p>
-                        <p className="text-xs text-gray-500">
-                          Free Plan
+                        <p className="text-xs text-muted-foreground">
+                          Premium Plan
                         </p>
                       </div>
                     </div>
 
-                    <DropdownMenuSeparator />
+                    <DropdownMenuSeparator className="bg-border/40" />
 
                     {/* Settings Link */}
                     <DropdownMenuItem asChild>
                       <Link
                         href="/dashboard/settings"
-                        className="cursor-pointer flex items-center min-h-[44px] py-3"
+                        className="cursor-pointer flex items-center gap-2 py-2.5 px-3 rounded-lg hover:bg-secondary/50 transition-all"
                       >
-                        <SettingsIcon className="mr-2 h-4 w-4" />
-                        Settings
+                        <SettingsIcon className="h-4 w-4" />
+                        <span className="font-medium">Settings</span>
                       </Link>
                     </DropdownMenuItem>
 
-                    <DropdownMenuSeparator />
+                    <DropdownMenuSeparator className="bg-border/40" />
 
                     {/* Sign Out */}
                     <DropdownMenuItem
                       onClick={handleSignOut}
-                      className="cursor-pointer text-error-600 focus:text-error-700 focus:bg-error-50 min-h-[44px] py-3"
+                      className="cursor-pointer text-destructive font-medium py-2.5 px-3 rounded-lg hover:bg-destructive/10 transition-all flex items-center gap-2"
                     >
-                      <LogOut className="mr-2 h-4 w-4" />
+                      <LogOut className="h-4 w-4" />
                       Sign Out
                     </DropdownMenuItem>
                   </DropdownMenuContent>
